@@ -4,7 +4,7 @@ import tensorflow as tf
 import tensorflow.keras.backend as K
 import tensorflow.keras as keras
 from sklearn.metrics import f1_score, precision_score,recall_score,accuracy_score
-from tensorflow.keras.applications import VGG16,VGG19, ResNet50,InceptionV3,Xception
+from tensorflow.keras.applications import VGG16,VGG19, ResNet50,InceptionV3,Xception,ResNet50V2,DenseNet121,EfficientNetV2B0
 import logging
 import time
 from utils import Utils
@@ -17,7 +17,7 @@ class Models:
       This class implements keras model construction methods and properties for training and inference.
     
     """
-    MODELS = [VGG16,VGG19, ResNet50,Xception]
+    MODELS = [VGG16,VGG19, ResNet50,Xception,ResNet50V2,InceptionV3,DenseNet121,EfficientNetV2B0]
     
     def __init__(self):
         pass
@@ -30,17 +30,17 @@ class Models:
         model = keras.Model(inputs=base_model.input, outputs=x, name = base_model.name)
         optim_params = dict(learning_rate = 0.001,momentum = 0.9394867962846013,decay = 0.0003)
         model.compile(loss='sparse_categorical_crossentropy',optimizer=keras.optimizers.SGD(**optim_params),metrics=[keras.metrics.SparseCategoricalAccuracy(name="accuracy")])
-        logging.info(f"Model built successfully {self.model.name}")
+        logging.info(f"Model built successfully {model.name}")
         return model
     
-    def train(self,MODELS: list,X_train: np.ndarray,X_test: np.ndarray,y_train: np.ndarray,y_test: np.ndarray,input_shape: tuple,output_nums: int,CLASSES: list,n=10):
+    def train(self,X_train: np.ndarray,X_test: np.ndarray,y_train: np.ndarray,y_test: np.ndarray,input_shape: tuple,output_nums: int,CLASSES: list,n=10):
         """
         This method trains a set of models and evalute them respective. The evaluation results are written to a csv file.
         
         """
         hist = {'model':[], 'accuracy': [],'f1_score':[], 'time':[]}
-        for j in  tqdm(range(len(MODELS))):
-            model =  self.build(MODELS[j], input_shape, output_nums)
+        for j in  tqdm(range(len(self.MODELS))):
+            model =  self.build(self.MODELS[j], input_shape, output_nums)
             logging.info(f"We are training {model.name}")
             logging.info("====================================================================")
             start = time.time()
