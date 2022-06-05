@@ -9,6 +9,10 @@ import pandas as pd
 import seaborn as sns
 from sklearn.metrics import confusion_matrix
 import logging
+import pip
+import importlib
+import sys
+import subprocess
 
 class Utils:
     """ 
@@ -78,6 +82,17 @@ class Utils:
         plt.close(fig)
         logging.info(f"Plot saved successfully to ./Figures/{filename}.svg")
 
+class PackageManager:
+    def __init__(self) -> None:
+        pass
+    @staticmethod
+    def install_and_import(package: str):
+        try:
+            importlib.import_module(package)
+        except ImportError:
+            pip.main(['install', package])
+        finally:
+            globals()[package] = importlib.import_module(package)
 
 if __name__ == "__main__":
     pass
