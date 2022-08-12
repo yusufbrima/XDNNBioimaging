@@ -4,7 +4,7 @@ import tensorflow as tf
 import tensorflow.keras.backend as K
 import tensorflow.keras as keras
 from sklearn.metrics import f1_score, precision_score,recall_score,accuracy_score
-from tensorflow.keras.applications import VGG16,VGG19, ResNet50,InceptionV3,Xception,ResNet50V2,DenseNet121,EfficientNetV2B0
+from tensorflow.keras.applications import VGG16,VGG19, ResNet50,InceptionV3,Xception,ResNet50V2,DenseNet121,EfficientNetB0 #EfficientNetV2B0
 import logging
 import time
 from utils import Utils
@@ -17,7 +17,7 @@ class Models:
       This class implements keras model construction methods and properties for training and inference.
     
     """
-    MODELS = [VGG16,VGG19, ResNet50,Xception,ResNet50V2,InceptionV3,DenseNet121,EfficientNetV2B0]
+    MODELS = [VGG16,VGG19, ResNet50,Xception,ResNet50V2,InceptionV3,DenseNet121,EfficientNetB0]
     
     def __init__(self):
         pass

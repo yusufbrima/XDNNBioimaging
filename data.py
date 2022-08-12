@@ -59,6 +59,7 @@ class DataLoad:
             label =  f.get('cjdata/label')
             label = int(np.squeeze(np.array(label)))
             y.append(label-1)
+            f.close()
         np.savez(self.outdir, X = np.array(X), y = np.array(y),Z = np.array(Z,dtype=object),A = np.array(A,dtype=object), C=list(self.CLASSES.values()))
         logging.info("Data has been processed successfully")
     
