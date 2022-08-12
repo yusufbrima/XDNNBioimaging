@@ -10,7 +10,7 @@ This repo is the implementation accompanying the above mentioned paper. The dire
 -Models contains the trained and evaluated models, each in its subdirectory
 
 ## Getting Started
-To get start, close this repo using the "git clone https://github.com/yusufbrima/XDNNBioimaging.git" command.
+To get start, close this repo using the *git clone https://github.com/yusufbrima/XDNNBioimaging.git* command.
 
 ### Dependencies
 * For now, all dependencies are in the requirements.txt file and can be installed with a *pip install requirements.txt* command. However, the code was written in Python 3.9.12, which shouldn't be much of a hassle installing.
@@ -19,12 +19,12 @@ To get start, close this repo using the "git clone https://github.com/yusufbrima
 ### Installing
 * From your terminal, cd into the repo
 * Run "pip install requirements.txt" to install all dependencies
-* That's it, ':heart_eyes:'
+* That's it, :heart_eyes:
 
 ### Executing program
 * From the terminal execute the following command passing the desired switch: "Download" -> To download the dataset, "Process" -> To Preprocess the dataset, "Train" -> To train the models and save them to the Models directory, "Saliency" -> To perform saliency analysis using the best performing models
-* For examples 'python cli.py --name Download' to download the dataset, typing lowercase download also works fine ':heart_eyes:'
-* Do the same for the other actions e.g., 'python cli.py --name train' to train the models
+* For examples *python cli.py --name Download* to download the dataset, typing lowercase download also works fine :heart_eyes:
+* Do the same for the other actions e.g., *python cli.py --name train* to train the models
 * By the way, all evaluation results are written as a .csv file in the ./Data directory for further analysis
 * That's all there is, sit back and analyse your results from the plots.
 
