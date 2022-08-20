@@ -17,7 +17,7 @@ class Models:
       This class implements keras model construction methods and properties for training and inference.
     
     """
-    MODELS = [VGG16,VGG19, ResNet50,Xception,ResNet50V2,InceptionV3,DenseNet121,EfficientNetB0]
+    MODELS = [VGG16,VGG19] #, ResNet50,Xception,ResNet50V2,InceptionV3,DenseNet121,EfficientNetB0
     
     def __init__(self):
         pass

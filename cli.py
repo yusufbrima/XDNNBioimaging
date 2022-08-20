@@ -12,8 +12,10 @@ from pathlib import Path
 import seaborn as sns
 from sklearn.model_selection import train_test_split
 import pandas as pd
+from tqdm import tqdm
 import tensorflow as tf
 import random
+from saliencyAnalysis import Saliency,Main
 
 tf.random.set_seed(42)
 np.random.seed(42)
@@ -48,18 +50,53 @@ def main(name):
             dl =  DataLoad()
             # dl.build(flag=True)
             dl.load()
-            idx = np.random.randint(0, dl.X.shape[0],16)
+            # idx = np.random.randint(0, dl.X.shape[0],16)
 
-            Utils.plot_samples(dl.X,dl.y,dl.CLASSES,idx,save=False)
+            # Utils.plot_samples(dl.A,dl.y,dl.Z,dl.CLASSES,idx,save=True)
 
             #@title Splitting the dataset into train/test
             X_train,X_test,y_train,y_test = train_test_split(dl.X_,dl.y, test_size=0.2, shuffle=True)
-            Utils.project2D(X_test, y_test,dl.CLASSES,figname='Test_XMRI_TSNE_Before',save=False)
+            # Utils.project2D(X_test, y_test,dl.CLASSES,figname='Test_XMRI_TSNE_Before',save=True)
+            
+            #@title Instantiating the Models method
+            models = Models()
+            #@title Training different CNN model
+            # dft = models.train(X_train= X_train,X_test = X_test,y_train = y_train,y_test = y_test,input_shape = X_train.shape[1:],output_nums = len(dl.CLASSES),CLASSES = dl.CLASSES,n=1)
+            
+            # We are plotting the evaluation result 
+            
+            dft =  pd.read_csv('./Data/Evaluation_Results.csv')
+            # Utils.plot_evaluation(dft)
+            top_n_dft = dft.nlargest(2,'f1_score')
+            for j in  tqdm(range(top_n_dft.shape[0])):
+                # print(j, top_n_dft.iloc[j,1])
+                model_name = top_n_dft.iloc[j,1]
+                X_hat = Utils.create_embedding(model_name, X_test)
+                Utils.project2D(X_hat, y_test,dl.CLASSES,figname=f'Test_set_{model_name}',save=True, show=False)
+
         elif(name.capitalize() == actions[3]):
             """
               Here we perform saliency analysis for the dataset
             """
-            pass 
+            click.echo("We are executing the saliency command, hurray!") 
+            dl =  DataLoad()
+
+            dl.load()
+
+            idx = Saliency.pick_indices(dl, n = 3)
+            models = Main.load_models(n =3)
+            for i in tqdm(range(len(models))):
+                
+                logging.info(f"Loading {models[i]}")
+                model = tf.keras.models.load_model(f"./Models/{models[i]}")
+
+                logging.info("Computing saliency masks, this may take a while...")
+                sa =  Saliency(model, dl, idx)
+                mycollection, data, vizresult =  sa.analyze()
+
+                logging.info("Plotting heatmaps of relevant features")
+                sa.plot_results(mycollection, data)
+                logging.info(f"Saliency analysis completed for {model.name} model")
         else:
             click.echo("Invalid option selected, please try again")
     else:
